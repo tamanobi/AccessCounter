@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import datetime
 
 html_body = """
@@ -16,9 +17,17 @@ count:{}
 class AccessCounter:
     def __init__(self, _filename):
         self.filename = _filename
-        f = open(self.filename, "r")
-        self.n = int(f.readline())
-        f.close()
+        self.n = self.read()
+
+    def preparedFile(self):
+        if os.path.exists(self.filename):
+            pass
+        else:
+            self.write(1)
+
+    def read(self):
+        self.preparedFile()
+        return int(open(self.filename, "r").readline())
 
     def now(self):
         return self.n
@@ -26,8 +35,14 @@ class AccessCounter:
     def increase(self):
         return self.n + 1
 
+    def write(self, n):
+        open(self.filename, "w").write(str(n))
+
+    def update(self):
+        self.write(self.increase())
+
     def __del__(self):
-        open(self.filename, "w").write(str(self.increase()))
+        self.update()
 
 
 def getAccessCount(filename):
