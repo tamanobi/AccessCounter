@@ -21,7 +21,8 @@ class AccessCounter:
 
     def preparedFile(self):
         if os.path.exists(self.filename):
-            pass
+            if open(self.filename, "r").readline() == "":
+                self.write(1)
         else:
             self.write(1)
 
