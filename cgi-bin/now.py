@@ -28,7 +28,9 @@ class AccessCounter:
 
     def read(self):
         self.preparedFile()
-        return int(open(self.filename, "r").readline())
+        with open(self.filename, "r") as f:
+            n = int(f.readline())
+        return n
 
     def now(self):
         return self.n
@@ -37,7 +39,8 @@ class AccessCounter:
         return self.n + 1
 
     def write(self, n):
-        open(self.filename, "w").write(str(n))
+        with open(self.filename, "w") as f:
+            f.write(str(n))
 
     def update(self):
         self.write(self.increase())
